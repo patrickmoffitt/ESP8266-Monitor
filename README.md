@@ -15,7 +15,7 @@ also be obtained on the Feather OLED (SSD1306) using the contact switches.
 ### Motivation
 <img src="./images/everspring.jpg" width="222px" style="float:right;margin:15px;"/>
 I own two <a href="http://a.co/4hNYmYY ">Everspring Z-Wave Wireless Temperature
-and Humidity sensors</a>. Apparently they are no long being made. At least I
+and Humidity sensors</a>. Apparently they are no longer being made. At least I
 couldn't find any for sale, so I decided to build something similar myself. The
 Everspring provides temperature and humidity readings. It can post this data via
 Z-Wave to a hub. Mine run for about a year on three lithium AAA batteries.
@@ -151,14 +151,14 @@ those fluctuations.
 There doesn't seem to be a library function for setting the MAC address in
 either the `ESP8266WiFiSTAClass` or `ESP` classes so I wrote my own. See
 `wifi_sta_set_mac()` in `ESP8266WiFiSTA_MAC.hpp`. This is a simple wrapper for
-the NonOS SDK `wifi_set_macaddr()`. Note that I've assumed the the station is in
+the NonOS SDK `wifi_set_macaddr()`. Note that I've assumed the station is in
 Access Point mode; `#define STATION_IF 0x00`.
 
 ### SSL Certificate Validation
 Some tutorials have suggested that fingerprint validation be used to verify
 connections to SSL servers. I wasn't comfortable with this so I implemented
 certificate validation by adding the DigiCert Global Root G2 used by
-io.adafruit.com into `src/ADAFRUIT_IO_MQTT.hpp`. See `caCert[]` in that file.
+io.adafruit.com into `ADAFRUIT_IO_MQTT.hpp`. See `caCert[]` in that file.
 
 ### Feeding the Watchdog Timers
 When the monitor's display is activated, by pressing reset and then "A" within 3
