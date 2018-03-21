@@ -20,6 +20,7 @@
     SOFTWARE.
  */
 
+#include <bitset>
 #include <Arduino.h>
 #include <WiFiClientSecure.h>
 #include <ESP8266WiFi.h>
@@ -78,6 +79,7 @@ void setup() {
     dht.begin();     // Initialize the DHT sensor.
     ina219.begin();  // Initialize the INA219 sensor.
     oled.enable();   // Enable the SSD1306 OLED Display.
+    pinMode(LED, LOW);  // Turn off the status LED.
     pinMode(BUTTON_A, INPUT_PULLUP);
     attachInterrupt(
             digitalPinToInterrupt(BUTTON_A),
@@ -96,7 +98,7 @@ void setup() {
     wifi_sta_set_mac();
     WiFi.begin(WIFI_SSID, WIFI_PASS);
     while (!Serial) {
-        delay(100);  // Do not exit setup until Serial has success.
+        delay(33);  // Do not exit setup until Serial has success.
     }
 }
 
@@ -160,30 +162,30 @@ void loop() {
 
         char payload_float[AIO_MQTT_PAYLOAD_FLOAT_MAX_SIZE];  // Float max 39 digits and minus sign.
         char zero{'\0'};
-        bool publish_status{false};
+        std::bitset<5> publish_status{0};
         if (mqtt_connect_status == 0) {
             // Publish Battery VDC Percent
             dtostrf(sensor.battery_vdc, 0, AIO_FLOAT_PRECISION, payload_float);
-            publish_status = mqtt.publish(BATTERY_VDC, payload_float, 0);
+            publish_status[0] = mqtt.publish(BATTERY_VDC, payload_float, 0);
             memcpy(&payload_float, &zero, AIO_MQTT_PAYLOAD_FLOAT_MAX_SIZE);
 
             // Publish Current mA
             dtostrf(sensor.current_ma, 0, AIO_FLOAT_PRECISION, payload_float);
-            mqtt.publish(CURRENT_MA, payload_float, 0);
+            publish_status[1] = mqtt.publish(CURRENT_MA, payload_float, 0);
             memcpy(&payload_float, &zero, AIO_MQTT_PAYLOAD_FLOAT_MAX_SIZE);
 
             // Publish Humidity ϕ
             dtostrf(sensor.humidity_rh, 0, AIO_FLOAT_PRECISION, payload_float);
-            publish_status = mqtt.publish(HUMIDITY_RH, payload_float, 0);
+            publish_status[2] = mqtt.publish(HUMIDITY_RH, payload_float, 0);
             memcpy(&payload_float, &zero, AIO_MQTT_PAYLOAD_FLOAT_MAX_SIZE);
 
             // Publish Temperature ℉
             dtostrf(sensor.temperature_f, 0, AIO_FLOAT_PRECISION, payload_float);
-            publish_status = mqtt.publish(TEMPERATURE_F, payload_float, 0);
+            publish_status[3] = mqtt.publish(TEMPERATURE_F, payload_float, 0);
             memcpy(&payload_float, &zero, AIO_MQTT_PAYLOAD_FLOAT_MAX_SIZE);
 
             // Publish Unix Epoch Time UTC
-            publish_status = mqtt.publish(UNIX_EPOCH_TIME, sensor.unix_epoch_time, 0);
+            publish_status[4] = mqtt.publish(UNIX_EPOCH_TIME, sensor.unix_epoch_time, 0);
         }
         Serial.print("Loop "); Serial.print(loop_counter); Serial.print(" of ");
         Serial.println(WDT_LOOP_LIMIT);
@@ -195,8 +197,18 @@ void loop() {
                 Serial.println("Display work is exhausting. Tired now. Going to sleep. ZZZzzz...");
                 monitor_deep_sleep();
             }
-        } else if (publish_status) {
-            delay(3100);
+        } else if (publish_status != 0) {  // At least one item was published.
+            delay(100);
+            Serial.print("Publish status battery: ");
+            Serial.println(publish_status[0]);
+            Serial.print("Publish status current: ");
+            Serial.println(publish_status[1]);
+            Serial.print("Publish status humidity: ");
+            Serial.println(publish_status[2]);
+            Serial.print("Publish status temperature: ");
+            Serial.println(publish_status[3]);
+            Serial.print("Publish status time: ");
+            Serial.println(publish_status[4]);
             Serial.println("No display work. Going back to sleep. ZZZzzz...");
             monitor_deep_sleep();
         }
@@ -209,5 +221,5 @@ void loop() {
 void monitor_deep_sleep() {
     oled.disable();
     mqtt.disconnect();
-    ESP.deepSleep(600e6, RF_NO_CAL);
+    ESP.deepSleep(900e6, RF_NO_CAL);
 }
