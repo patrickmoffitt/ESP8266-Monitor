@@ -143,8 +143,8 @@ abbreviation in `ntp_time_utils::set_dst_usa`.
 
 ### Battery voltage
 The voltage is read by `get_battery_vdc()` in `monitor_read_battery.cpp`. This
-function reads the ADC pin 30 times in three seconds and averages the results
-together. The reading fluctuates based upon WiFi activity. Polling averages away
+function reads the ADC pin 30 times in one second and averages the results
+together. The readings fluctuate based upon WiFi activity. Polling averages away
 those fluctuations.
 
 ### MAC Address
@@ -166,7 +166,7 @@ seconds, the loop permits the user to see 3 different pages of output by
 pressing the "B" button sequentially. (Pressing "C" selects between Fahrenheit
 and Celsius.) Pressing "A" again sends the device into sleep mode. This
 interaction amounts to a long time for the loop to run. By contrast when
-the display is off the loop only runs for about 5 seconds and then the device
+the display is off the loop only runs for about one second and then the device
 goes back to sleep.
 
 I found that the length of time the display mode can operate is limited by the
