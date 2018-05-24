@@ -57,9 +57,7 @@ void monitor_display::show_page(int page) {
         default:
         case 0 : {
             char date_time[21];
-            char zero{'\0'};
-            memcpy(&date_time, &zero, sizeof(date_time));
-            memcpy(&date_time, &sensor.unix_epoch_time[4], 21);
+            memcpy(&date_time, &sensor.unix_epoch_time[4], sizeof(date_time));
             display.println(date_time);
             if (degrees_c_f) {
                 double temperature_c = (sensor.temperature_f - 32.0) * (5.0 / 9.0);
