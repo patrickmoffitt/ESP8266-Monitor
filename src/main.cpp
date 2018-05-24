@@ -131,7 +131,7 @@ void loop() {
 
         sensor.battery_vdc = get_battery_vdc();
         sensor.current_ma = ina219.getCurrent_mA();
-        if (isnan(sensor.current_ma)) {
+        if (isnan(sensor.current_ma) or sensor.current_ma < 0) {
             Serial.println("Error reading current sensor!");
         } else {
             Serial.print("Current : ");
