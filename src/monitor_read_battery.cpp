@@ -33,7 +33,7 @@ int get_battery_vdc() {
     std::array<int, readings_len> readings;
     std::fill_n(begin(readings), readings_len, 0);
     for (int i=0; i < (int) readings_len; i++) {
-        readings[i] = lround(analogRead(A0) * 0.97656);
+        readings[i] = lround(analogRead(A0) * 0.97656) + MONITOR_READ_BATTERY_VDC_CALIBRATION;
         delay(33);
     }
     int sum = accumulate(begin(readings), end(readings), 0, std::plus<int>());
