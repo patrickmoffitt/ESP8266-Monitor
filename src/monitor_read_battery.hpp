@@ -22,7 +22,7 @@
 
 #ifndef MONITOR_READ_BATTERY_HPP
 #define MONITOR_READ_BATTERY_HPP
-#define MONITOR_READ_BATTERY_VDC_CALIBRATION 37
+#define MONITOR_READ_BATTERY_VDC_CALIBRATION 25
 
 #include <Arduino.h>
 int get_battery_vdc();
