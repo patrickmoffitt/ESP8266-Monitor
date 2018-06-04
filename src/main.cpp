@@ -107,7 +107,8 @@ void loop() {
     ESP.wdtFeed();  // This API only works when software watchdog is enabled.
     yield();
     if (WiFi.isConnected()) {
-        Serial.println(WiFi.localIP());
+        Serial.print("IP: ");  Serial.println(WiFi.localIP());
+        Serial.print("DNS: ");  Serial.println(WiFi.dnsIP());
 
         // SSL certificate validation depends upon setting system time of day.
         time_util.set_time_of_day();
