@@ -26,7 +26,7 @@
 #include <Arduino.h>
 #include <ctime>
 #include <map>
-#include <string.h>
+#include <cstring>
 #include "monitor_data.hpp"
 
 struct ntp_time_utils {
