@@ -19,6 +19,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
  */
+
 #include "ntp_time_utils.hpp"
 
 extern bool system_time_set;
@@ -64,17 +65,18 @@ void ntp_time_utils::set_dst_usa(tm *time_o, time_t *time_stamp) {
  * Set time using SNTP.
  */
 void ntp_time_utils::set_time_of_day() {
+    time_t now = time(nullptr);
     if (not system_time_set) {
         configTime(GMT_OFFSET * 3600,
                    0,
-                   "time.nist.gov",
-                   "pool.ntp.org");
+                   "pool.ntp.org",
+                   "time.nist.gov");
+        while (now < 8 * 3600 * 2) {
+            now = time(nullptr);
+            delay(200);
+            Serial.print("Time: ");  Serial.println(now);
+        }
         system_time_set = true;
-    }
-    time_t now = time(nullptr);
-    while (now < 8 * 3600 * 2) {
-        delay(100);
-        now = time(nullptr);
     }
     struct tm time_info;
     gmtime_r(&now, &time_info);
