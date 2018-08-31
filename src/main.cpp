@@ -39,6 +39,8 @@
  */
 #define WDT_LOOP_LIMIT 5
 
+#define SLEEP_TIME_MS ((uint64_t)300e6)
+
 // struct to hold sensor measurements.
 monitor_data sensor;
 
@@ -222,5 +224,5 @@ void loop() {
 void monitor_deep_sleep() {
     oled.disable();
     mqtt.disconnect();
-    ESP.deepSleep(900e6, RF_NO_CAL);
+    ESP.deepSleep(SLEEP_TIME_MS, RF_NO_CAL);
 }
