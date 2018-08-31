@@ -26,4 +26,6 @@
 // Measure high side voltage and DC current draw over I2C.
 #include <Adafruit_INA219.h>
 
+double get_current_ma(void);
+
 #endif //MONITOR_MONITOR_CURRENT_SENSOR_HPP
