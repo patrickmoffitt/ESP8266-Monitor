@@ -73,7 +73,7 @@ void ntp_time_utils::set_time_of_day() {
                    "time.nist.gov");
         while (now < 8 * 3600 * 2) {
             now = time(nullptr);
-            delay(200);
+            delay(500);
             Serial.print("Time: ");  Serial.println(now);
         }
         system_time_set = true;
