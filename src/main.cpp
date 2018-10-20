@@ -75,6 +75,8 @@ volatile int loop_counter{1};
 
 void monitor_deep_sleep();  //  Advance declaration.
 
+int wifi_connection_attempts{0};
+
 void setup() {
     Serial.begin(115200);
     // Serial.setDebugOutput(true);
@@ -216,7 +218,16 @@ void loop() {
             monitor_deep_sleep();
         }
     } else {
+        Serial.println("WiFi is not connected.");
+        Serial.print("MAC Address: ");
         Serial.println(WiFi.macAddress());
+        wifi_connection_attempts++;
+        Serial.print("Connection attempt #");
+        Serial.print(wifi_connection_attempts);
+        Serial.println(" failed.");
+        if (wifi_connection_attempts == 10) {
+            monitor_deep_sleep();
+        }
         delay(300);
     }
 }
