@@ -110,7 +110,7 @@ void setup() {
 void loop() {
     ESP.wdtFeed();  // This API only works when software watchdog is enabled.
     yield();
-    if (WiFi.isConnected()) {
+    if (WiFi.status() == WL_CONNECTED) {
         Serial.print("IP: ");  Serial.println(WiFi.localIP());
         Serial.print("DNS: ");  Serial.println(WiFi.dnsIP());
 
@@ -228,7 +228,7 @@ void loop() {
         if (wifi_connection_attempts == 10) {
             monitor_deep_sleep();
         }
-        delay(300);
+        delay(3000);
     }
 }
 
