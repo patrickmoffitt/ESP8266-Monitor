@@ -236,3 +236,7 @@ Bugs, Issues and Pull Requests
 ------------------------------
 If you find a bug please create an issue. If you'd like to contribute please
 send a pull request.
+
+Project Status
+--------------
+This project has been archived and is no longer being maintained by the author.
